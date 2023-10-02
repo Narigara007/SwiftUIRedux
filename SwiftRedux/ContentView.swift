@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+    @State private var isPresented: Bool = false
     @EnvironmentObject var store: Store<AppState>
     
     struct Props {
@@ -37,14 +37,20 @@ struct ContentView: View {
             Button("Decrement"){
                 props.onDecrement()
             }
+            Spacer()
+            Button("Add Task") {
+                isPresented = true
+            }
         }
-        .padding()
+        .sheet(isPresented: $isPresented) {
+            Text("Add Task View")
+        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let store = Store(reducer: counterReducer,state: CounterState())
+        let store = Store(reducer: appReducer,state: AppState())
         return ContentView().environmentObject(store)
     }
 }
